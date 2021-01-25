@@ -49,6 +49,9 @@
             <div class="col-md-auto">
                 <button class="btn btn-primary btn-sm" type="submit">Apply</button>
             </div>
+            <div class="col-sm-auto">
+                <a href="/Hccc">clear all</a>
+            </div>
         </div>
     </form>
 </div>&nbsp;
@@ -237,31 +240,6 @@ else
         function ApplyDateFilter(e) {
             e.preventDefault();
             location.href = "/Hccc?" + $("#searchForm").serialize() + "&" + $("#dateForm").serialize();
-            //var from = $("#fromDate").val();
-            //var to = $("#toDate").val();
-            //var type = $("#searchTypeSelection").val();
-            //var criteria = $("searchCriteriaSelection").val();
-            //var text = $("#searchText").val();
-            @*$.ajax({
-                type: "Get",
-                url: '@Url.Action("IndexFilter", "Hccc")',
-                data:
-                {
-                    FromDate: from,
-                    ToDate: to,
-                    SearchType: type,
-                    SearchCriteria: criteria,
-                    SearchText: text
-                },
-                contentType: "application/json",
-                success: function () {
-                    $("#main").html("");
-                    $("#main").html(result);
-                },
-                error: function () {
-                    alert("There was an error applying the selected date range. Refresh the page and try again.");
-                }
-            });*@
         }
     </script>
 }

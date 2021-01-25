@@ -11,13 +11,13 @@ namespace ArchivesFileManagement_MVC.Models.Hccc
     {
         [Display(Name = "Type"), Required]
         public string Type { get; set; }
-        [Display(Name = "#"), Required]
+        [Display(Name = "Case #"), Required]
         public string CaseNo { get; set; }
         [Display(Name = "Description"), Required]
         public string Description { get; set; }
         [Display(Name = "Location"), Required]
         public string Location { get; set; }
-        [Required]
+        [Display(Name = "Accession #"), Required]
         public string SessionNo { get; set; }
         [Display(Name = "File"), Required]
         public IFormFile Attachment { get; set; }

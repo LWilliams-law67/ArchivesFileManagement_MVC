@@ -48,19 +48,18 @@ namespace ArchivesFileManagement_MVC.Controllers
             else if( !searchType.ToUpper().Equals("--SELECT--") && !searchCriteria.ToUpper().Equals("--SELECT--"))
             {
                 vm.CurrentFilter = searchText;
-                vm.SearchResults = GetCasesFromContext(_context, searchType, searchCriteria, searchText);
-                //return View(vm);
+                hcccQuery = GetCasesFromContext(_context, searchType, searchCriteria, searchText);
             }
-            //else
-            //{
-            //     hcccQuery = hcccQuery.
-            //}
 
             if (DateTime.TryParse(fromDate, out DateTime startDate) && DateTime.TryParse(toDate, out DateTime endDate))
             {
-                vm.SearchResults = hcccQuery.Where(c => c.UploadedDate.Date >= startDate && c.UploadedDate.Date <= endDate).ToList();
+                vm.SearchResults = hcccQuery.Where(c => c.UploadedDate.Date >= startDate && c.UploadedDate.Date <= endDate).OrderByDescending(c => c.UploadedDate).ToList();
                 vm.FromDate = fromDate;
                 vm.ToDate = toDate;
+            }
+            else
+            {
+                vm.SearchResults = hcccQuery.ToList();
             }
 
             return View(vm);
@@ -194,6 +193,7 @@ namespace ArchivesFileManagement_MVC.Controllers
                 {
                     _context.Update(hcccRecord);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -206,29 +206,10 @@ namespace ArchivesFileManagement_MVC.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), "Home");
+                
             }
             ViewBag.TypeOptions = new SelectList(HcccType.GetCaseTypesForCreatingEditing(_context));
-            return View(nameof(Index), "Home");
-        }
-
-        // GET: Hccc/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hcccmain = await _context.Hcccmain
-                .Include(h => h.TypeNavigation)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (hcccmain == null)
-            {
-                return NotFound();
-            }
-
-            return View(hcccmain);
+            return PartialView("_Edit", newEditModel);
         }
 
         // POST: Hccc/Delete/5
@@ -239,6 +220,7 @@ namespace ArchivesFileManagement_MVC.Controllers
             var hcccmain = await _context.Hcccmain.FindAsync(id);
             _context.Hcccmain.Remove(hcccmain);
             await _context.SaveChangesAsync();
+            ViewBag.TypeOptions = new SelectList(HcccType.GetCaseTypesForCreatingEditing(_context));
             return RedirectToAction(nameof(Index));
         }
 
@@ -250,7 +232,7 @@ namespace ArchivesFileManagement_MVC.Controllers
         /********************
          * Helper functions *
          ********************/
-        private List<Hcccmain> GetCasesFromContext(BCC_ArchivesContext db, string searchType, string searchCriteria, string searchText)
+        private IQueryable<Hcccmain> GetCasesFromContext(BCC_ArchivesContext db, string searchType, string searchCriteria, string searchText)
         {
             bool isAllTypes = searchType.ToUpper().Equals("ALL");
             bool isAllCriteria = searchCriteria.ToUpper().Equals("ALL");
@@ -302,13 +284,7 @@ namespace ArchivesFileManagement_MVC.Controllers
                 }
             }
 
-            List<Hcccmain> cases = new List<Hcccmain>();
-            foreach (var c in hcccQuery)
-            {
-                cases.Add(c);
-            }
-
-            return cases;
+            return hcccQuery;
         }
     }
 }

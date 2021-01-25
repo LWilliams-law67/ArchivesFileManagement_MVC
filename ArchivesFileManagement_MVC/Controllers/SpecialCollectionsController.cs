@@ -40,14 +40,17 @@ namespace ArchivesFileManagement_MVC.Controllers
             else if (!searchType.ToUpper().Equals("--SELECT--"))
             {
                 vm.CurrentFilter = searchText;
-                vm.SearchResults = GetCollectionsFromContext(collections, searchType, searchText);
-                //return View(vm);
+                collections = GetCollectionsFromContext(collections, searchType, searchText);
             }
             if (DateTime.TryParse(fromDate, out DateTime startDate) && DateTime.TryParse(toDate, out DateTime endDate))
             {
                 vm.SearchResults = collections.Where(c => c.UploadDate.Date >= startDate && c.UploadDate.Date <= endDate).ToList();
                 vm.FromDate = startDate;
                 vm.ToDate = endDate;
+            }
+            else
+            {
+                vm.SearchResults = collections.ToList();
             }
 
             return View(vm);
@@ -110,7 +113,7 @@ namespace ArchivesFileManagement_MVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.TypeOptions = new SelectList(SpecialCollectionTypeModel.GetCollectionTypesForCreatingEditing(_context));
-            return RedirectToAction(nameof(Index));
+            return PartialView("_Create", newSpecialCollectionModel);
         }
 
         // GET: SpecialCollections/Edit/5
@@ -176,6 +179,7 @@ namespace ArchivesFileManagement_MVC.Controllers
                 {
                     _context.Update(specialCollection);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -188,10 +192,10 @@ namespace ArchivesFileManagement_MVC.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
             ViewBag.TypeOptions = new SelectList(SpecialCollectionTypeModel.GetCollectionTypesForCreatingEditing(_context));
-            return View(nameof(Index), "Home");
+            return PartialView("_Edit", newEditModel);
         }
 
         // POST: SpecialCollections/DeleteConfirmed/5
@@ -215,7 +219,7 @@ namespace ArchivesFileManagement_MVC.Controllers
             return _context.SpecialCollections.Any(e => e.Id == id);
         }
 
-        private List<SpecialCollections> GetCollectionsFromContext(IQueryable<SpecialCollections> db, string searchType, string searchText)
+        private IQueryable<SpecialCollections> GetCollectionsFromContext(IQueryable<SpecialCollections> db, string searchType, string searchText)
         {
             if(searchType.ToUpper().Equals("ALL"))
             {
@@ -229,13 +233,8 @@ namespace ArchivesFileManagement_MVC.Controllers
                    .OrderBy(sc => sc.AccessionNo)
                    .Include(sc => sc.Type);
             }
-            List<SpecialCollections> collections = new List<SpecialCollections>();
-            foreach (var sc in db)
-            {
-                collections.Add(sc);
-            }
 
-            return collections;
+            return db;
         }
     }
 }

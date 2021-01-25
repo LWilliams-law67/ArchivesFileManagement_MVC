@@ -11,7 +11,7 @@
         <button type="button" class="close" data-dismiss="modal">X</button>
     </div>
     <div class="modal-body">
-        <form id="editForm" asp-action="Edit">
+        <form role="form" id="editForm" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col form-group">
@@ -43,11 +43,11 @@
                 <input type="file" asp-for="Attachment" />
                 <span asp-validation-for="Attachment" class="text-danger"></span>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="DeleteRecord()">Delete</button>
+                <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="SubmitForm()">Save</button>
+            </div>
         </form>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="DeleteRecord()">Delete</button>
-        <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="SubmitForm()">Save</button>
     </div>
 </div>
 
@@ -77,11 +77,10 @@
     function DeleteRecord() {
         var id = @ViewBag.Id;
         var formData = new FormData($("#editForm").get(0));
-        formData.append("id", ""+id);
+        formData.append("id", "" + id);
         var isYes = confirm("Do you want to remove this record?");
         if(isYes)
         {
-            debugger;
             $.ajax({
             type: "POST",
             url: '@Url.Action("DeleteConfirmed", "SpecialCollections")',
