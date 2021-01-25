@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />*@
+</head>
+<body>
+    <header>
+        <div class="container-fluid">
+            <div style="text-align:center!important">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/BCC_Logo_Seal_CMYK_Vertical.png" style="height:210px;width:280px;" />
+                </a>
+            </div>
+            <h1 style="text-align: center; color:midnightblue" class="display">Archives File Management System</h1>
+            <hr />
+        </div>
+
+        @{ string url; }
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-sm navbar-light bg-light">
+                <div class="container">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            @{ url = Url.Action("Index", "Home"); }
+                            <li class="nav-item">
+                                <a class="nav-link @(Context.Request.Path == url ? "active" : null)" href="@url">Home</a>
+                            </li>
+                            @{ url = Url.Action("Index", "Hccc"); }
+                            <li class="nav-item">
+                                <a class="nav-link @(Context.Request.Path.StartsWithSegments(url) ? "active" : null)" href="@url">H.C.C.C.</a>
+                            </li>
+                            @{ url = Url.Action("Index", "SpecialCollections"); }
+                            <li class="nav-item">
+                                <a class="nav-link @(Context.Request.Path.StartsWithSegments(url) ? "active" : null)" href="@url">Special Collections</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <label class="align-content-end">@User.Identity.Name.Split('\\')[1]</label>
+            </nav>
+            <hr />
+        </div>
+    </header>
+    <div class="container-fluid">
+        <main id="main" role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    @*<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,126 @@
+﻿@model ArchivesFileManagement_MVC.Models.Hccc.VMHcccEdit
+
+@{
+    Layout = null;
+}
+
+<script>
+    function ValidateFields() {
+            //all fields must be filled out
+            if( $("#"))
+        }
+
+    function SubmitForm() {
+        var formData = new FormData($("#editForm").get(0));
+        var id = @ViewBag.Id;
+        formData.append("Id", "" + id);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Edit", "Hccc")',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function () {
+                alert("New case data saved successfully.");
+                $("#addModalContent").html("");
+                $("#archivesModal").modal("hide");
+            },
+            error: function () {
+                //alert("There was an error updating the record. Try again.");
+            }
+        });
+    }
+
+    function DeleteRecord() {
+        var isYes = confirm("Do you want to remove this record?");
+        if(isYes)
+        {
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("Delete", "Hccc")',
+            data: {
+                Id: @ViewBag.Id
+            },
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function () {
+                alert("Record removed successfully.");
+                $("#addModalContent").html("");
+                $("#archivesModal").modal("hide");
+            },
+            error: function () {
+                //alert("There was an error deleting the record. Try again.");
+            }
+        });
+        }
+        else
+        {
+            alert("Record not deleted.");
+            return;
+        }   
+    }
+</script>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">EDIT S.H.R.A.B. DOC</h4>
+        <button type="button" class="close" data-dismiss="modal">X</button>
+    </div>
+    <div class="modal-body">
+        <form asp-action="Edit" id="editForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" class="form-control" asp-items="ViewBag.TypeOptions" required></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" required/>
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestructionDate" class="control-label"></label>
+                <input asp-for="DestructionDate" class="form-control" required/>
+                <span asp-validation-for="DestructionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CaseNo" class="control-label"></label>
+                <input asp-for="CaseNo" class="form-control" required/>
+                <span asp-validation-for="CaseNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SessionNo" class="control-label"></label>
+                <input asp-for="SessionNo" class="form-control" required/>
+                <span asp-validation-for="SessionNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" required/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Current File: </label>
+                <a asp-action="Index" asp-controller="DisplayPDF" asp-route-id="@ViewBag.Id" target="_blank">PDF</a>
+            </div>
+            <div class="form-group">
+                <label style="font-size:smaller;">Note: choosing a new file will overwrite the existing file.</label>
+                <input id="newFileInput" asp-for="Attachment" type="file" />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="DeleteRecord()">Delete</button>
+            <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="SubmitForm()">Save</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

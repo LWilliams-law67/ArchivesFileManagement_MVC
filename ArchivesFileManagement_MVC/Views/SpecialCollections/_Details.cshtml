@@ -1,0 +1,92 @@
+﻿@model ArchivesFileManagement_MVCDB.SpecialCollections
+
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">COLLECTION DETAILS</h4>
+        <button type="button" class="close" data-dismiss="modal">X</button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-hover table-bordered border-2 border-info">
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Type.TypeName)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Location)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.AccessionNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.AccessionNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Attachment)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-controller="DisplayCollection" asp-route-id="@Model.Id" target="_blank">PDF</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.UploadedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.UploadedBy)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.UploadDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.UploadDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.EditBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EditBy)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.EditDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EditDate)
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

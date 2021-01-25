@@ -1,0 +1,67 @@
+﻿@model ArchivesFileManagement_MVC.Models.SpecialCollections.VMSpecialCollectionCreate
+
+@{
+    Layout = null;
+}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">NEW COLLECTION DOC</h4>
+        <button type="button" class="close" data-dismiss="modal">X</button>
+    </div>
+    <div class="modal-body">
+        <form enctype="multipart/form-data" id="createForm" asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col form-group">
+                    <label asp-for="RecordType" class="control-label"></label>
+                    <select asp-for="RecordType" class="form-control" asp-items="ViewBag.TypeOptions" required></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" required />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccessionNo" class="control-label"></label>
+                <input asp-for="AccessionNo" class="form-control" required />
+                <span asp-validation-for="AccessionNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" required />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="Attachment" class="control-label"></label>*@
+                <input type="file" asp-for="Attachment" required />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="SubmitForm()">Upload</button>
+    </div>
+</div>
+
+<script>
+    function SubmitForm() {
+        var formData = new FormData($("#createForm").get(0));
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Create", "SpecialCollections")',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function () {
+                alert("New collection uploaded successfully.");
+            },
+            error: function () {
+                //alert("There was an error creating the record. Try again.");
+            }
+        });
+    }
+</script>

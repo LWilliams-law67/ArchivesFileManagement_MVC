@@ -1,0 +1,104 @@
+﻿@model ArchivesFileManagement_MVCDB.Hcccmain
+
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modalTitle">S.H.R.A.B. DOC DETAILS</h4>
+        <button id="btnCloseModal" type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-hover table-bordered border-2 border-info">
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.TypeNavigation)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TypeNavigation.Description)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.CaseNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.CaseNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Description)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Location)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.SessionNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.SessionNo)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.DestructionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.DestructionDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.Attachment)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-controller="DisplayPDF" asp-route-id="@Model.Id" target="_blank">PDF</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.UploadedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.UploadedBy)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.UploadedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.UploadedDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.EditedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EditedBy)
+                </td>
+            </tr>
+            <tr>
+                <td class="table-danger">
+                    @Html.DisplayNameFor(model => model.EditedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.EditedDate)
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

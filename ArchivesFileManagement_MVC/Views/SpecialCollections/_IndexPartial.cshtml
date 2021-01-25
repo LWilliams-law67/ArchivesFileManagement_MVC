@@ -1,0 +1,85 @@
+﻿@model ArchivesFileManagement_MVC.Models.SpecialCollections.VMSpecialCollectionSearch
+
+@{
+    Layout = null;
+}
+
+@if (Model.SearchResults.Count() > 0)
+{
+    <div class="card align-content-center border-dark">
+        <div class="card-header">
+            <h1 style="text-align:center; color:midnightblue;">Search Results</h1>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover table-bordered border-2 border-info">
+                <thead>
+                    <tr class="table-primary">
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().Type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().AccessionNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().Location)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().UploadedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().UploadDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SearchResults.First().Attachment)
+                        </th>
+                        <th><!--for details button heading--></th>
+                        <th><!--for edit button heading--></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SearchResults)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type.TypeName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AccessionNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UploadedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UploadDate)
+                            </td>
+                            <td>
+                                <a asp-action="Index" asp-controller="DisplayCollection" asp-route-id="@item.Id" target="_blank">PDF</a>
+                            </td>
+                            <td>
+                                <button class="btnDetails btn btn-primary btn-sm" data="@item.Id" data-toggle="modal" data-target="#archivesModal">Details</button>
+                            </td>
+                            <td>
+                                <button class="btnEdit btn btn-primary btn-sm" data="@item.Id" data-toggle="modal" data-target="#archivesModal">Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        No search results
+    </div>
+}

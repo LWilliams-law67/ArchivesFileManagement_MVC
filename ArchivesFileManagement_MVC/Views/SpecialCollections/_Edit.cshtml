@@ -1,0 +1,107 @@
+﻿@model ArchivesFileManagement_MVC.Models.SpecialCollections.VMSpecialCollectionEdit
+
+@{
+    Layout = null;
+}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">EDIT COLLECTION</h4>
+        <button type="button" class="close" data-dismiss="modal">X</button>
+    </div>
+    <div class="modal-body">
+        <form id="editForm" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col form-group">
+                    <label asp-for="RecordType" class="control-label"></label>
+                    <select asp-for="RecordType" class="form-control" asp-items="ViewBag.TypeOptions" required></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" required />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccessionNo" class="control-label"></label>
+                <input asp-for="AccessionNo" class="form-control" required />
+                <span asp-validation-for="AccessionNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" required />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Current File: </label>
+                <a asp-action="Index" asp-controller="DisplayCollection" asp-route-id="@ViewBag.Id" target="_blank">PDF</a>
+            </div>
+            <div class="form-group">
+                <label style="font-size:smaller;">Note: choosing a new file will overwrite the existing file.</label>
+                <input type="file" asp-for="Attachment" />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="DeleteRecord()">Delete</button>
+        <button type="submit" class="btn btn-primary btn-lg" data-dismiss="modal" onclick="SubmitForm()">Save</button>
+    </div>
+</div>
+
+<script>
+    function SubmitForm() {
+        var formData = new FormData($("#editForm").get(0));
+        var id = @ViewBag.Id;
+        formData.append("Id", id);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Edit", "SpecialCollections")',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "text",
+            success: function () {
+                alert("Collection updated successfully.");
+                $("#addModalContent").html("");
+                $("#archivesModal").modal("hide");
+            },
+            error: function () {
+                //alert("There was an error updating the record. All fields must be filled out.");
+            }
+        });
+    }
+
+    function DeleteRecord() {
+        var id = @ViewBag.Id;
+        var formData = new FormData($("#editForm").get(0));
+        formData.append("id", ""+id);
+        var isYes = confirm("Do you want to remove this record?");
+        if(isYes)
+        {
+            debugger;
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("DeleteConfirmed", "SpecialCollections")',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "text",
+            success: function () {
+                alert("Record removed successfully.");
+                $("#addModalContent").html("");
+                $("#archivesModal").modal("hide");
+            },
+            error: function () {
+                //alert("There was an error deleting the record. Try again.");
+            }
+        });
+        }
+        else
+        {
+            alert("Record not deleted.");
+        }
+    }
+</script>
